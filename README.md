@@ -1,33 +1,18 @@
 # CarouselView
-This is a C# port of CarouselView for Android developed by Sayyam Mehmood & Muhammad Rehan for Xamarin.Android. Original library can be found at [a link](https://github.com/sayyam/carouselview)
 
-<p align="center"><img src="/sample/src/main/assets/carousel_baner.jpg"></p>
+<p align="center"><img src="/assets/carousel_baner.jpg"></p>
 
 CarouselView
 =======
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CarouselView-green.svg?style=true)](https://android-arsenal.com/details/1/3289)
-
-A simple yet flexible library to add carousel view in your android application.
+A simple yet flexible library to add carousel view in your Xamarin Android application. This is a C# port of CarouselView for Android which can be found at 
 
 
-<img src="/sample/src/main/assets/carousel_gif.gif" title="sample" width="500" height="460" />
+<img src="/assets/carousel_gif.gif" title="sample" width="500" height="460" />
 
 
 Download
 --------
-####Gradle:
-```groovy
-compile 'com.synnapps:carouselview:0.0.9'
-```
-####Maven:
-```xml
-<dependency>
-  <groupId>com.synnapps</groupId>
-  <artifactId>carouselview</artifactId>
-  <version>0.0.9</version>
-  <type>pom</type>
-</dependency>
-```
+
 
 Usage
 --------
@@ -35,7 +20,7 @@ Usage
 ####Include following code in your layout:
 
 ```xml
-    <com.synnapps.carouselview.CarouselView
+    <com.cynapto.carouselview.CarouselView
         android:id="@+id/carouselView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -47,64 +32,64 @@ Usage
         app:strokeWidth="1dp"/>
 ```
 ####Include following code in your activity:
-```java
-public class SampleCarouselViewActivity extends AppCompatActivity {
+```cs
+public class SampleCarouselViewActivity : AppCompatActivity
+{
+	public static int[] SampleImages = { Resource.Drawable.image_1, Resource.Drawable.image_2, Resource.Drawable.image_3, Resource.Drawable.image_4 };
 
-    CarouselView carouselView;
+	CarouselView.CarouselView _carouselView;
 
-    int[] sampleImages = {R.drawable.image_1, R.drawable.image_2, R.drawable.image_3, R.drawable.image_4, R.drawable.image_5};
+	protected override void OnCreate(Bundle savedInstanceState)
+	{
+		base.OnCreate(savedInstanceState);
+		SetContentView(Resource.Layout.activity_sample_carousel_view);
+		this._carouselView = (CarouselView.CarouselView)FindViewById(Resource.Id.carouselView);
+		this._carouselView.SetImageListener(new SampleImageListener());
+		this._carouselView.SetPageCount(SampleImages.Length);
+	}
+}
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sample_carousel_view);
-
-        carouselView = (CarouselView) findViewById(R.id.carouselView);
-        carouselView.setPageCount(sampleImages.length);
-
-        carouselView.setImageListener(imageListener);
-    }
-
-    ImageListener imageListener = new ImageListener() {
-        @Override
-        public void setImageForPosition(int position, ImageView imageView) {
-            imageView.setImageResource(sampleImages[position]);
-        }
-    };
-
+public class SampleImageListener : Java.Lang.Object, IImageListener
+{
+	public void SetImageForPosition(int position, ImageView imageView)
+	{
+		imageView.SetImageResource(SampleCarouselViewActivity.SampleImages[position]);
+	}
 }
 ```
 
-####If you want to add custom view, implement ```ViewListener```.
-```java
+####If you want to add custom view, implement ```IViewListener```.
+```cs
+public class SampleCarouselViewActivity : AppCompatActivity
+{
+	CarouselView.CarouselView _carouselView;
 
-public class SampleCarouselViewActivity extends AppCompatActivity {
+	protected override void OnCreate(Bundle savedInstanceState)
+	{
+		base.OnCreate(savedInstanceState);
+		SetContentView(Resource.Layout.activity_sample_carousel_view);
+		this._carouselView = (CarouselView.CarouselView)FindViewById(Resource.Id.carouselView);
+		this._carouselView.SetViewListener(new SampleImageListener());
+		this._carouselView.SetPageCount(5); //set your own image count.. you can even set this later after loading data from a service
+	}
+}
 
-    CarouselView customCarouselView;
-    int NUMBER_OF_PAGES = 5;
+public class SampleViewListener : Java.Lang.Object, IViewListener
+{
+	private CarouselView.CarouselView _carouselView;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sample_carousel_view);
+	public SampleViewListener(CarouselView.CarouselView carouselView)
+	{
+		_carouselView = carouselView;
+	}
 
-        customCarouselView = (CarouselView) findViewById(R.id.customCarouselView);
-        customCarouselView.setPageCount(NUMBER_OF_PAGES);
-        // set ViewListener for custom view 
-        customCarouselView.setViewListener(viewListener);
-    }
-
-    ViewListener viewListener = new ViewListener() {
-    
-        @Override
-        public View setViewForPosition(int position) {
-            View customView = getLayoutInflater().inflate(R.layout.view_custom, null);
-            //set view attributes here
-            
-            return customView;
-        }
-    };
-
+	public View SetViewForPosition(int position)
+	{
+		var iv = new ImageView(_carouselView.Context);
+		//set view attributes here
+		return iv;
+	}
+}
 ```
 
 ####Supported xml Attributes
@@ -130,20 +115,14 @@ public class SampleCarouselViewActivity extends AppCompatActivity {
 _Note:_ Add ```xmlns:app="http://schemas.android.com/apk/res-auto"``` in your layout's root view.
 
 
-Developed By
+Ported By
 --------
-- Sayyam Mehmood
-- Muhammad Rehan
-
-Special Thanks
---------
-
-This library uses code snippet from Jake Wharton's [ViewPagerIndicator](https://github.com/JakeWharton/ViewPagerIndicator) to display page indicator.
+- Mohib Sheth
 
 License
 --------
 
-    Copyright 2016 Sayyam.
+    Copyright 2016 Mohib.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
