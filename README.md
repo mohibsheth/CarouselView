@@ -1,10 +1,8 @@
-# CarouselView
-
 <p align="center"><img src="/assets/carousel_baner.jpg"></p>
 
 CarouselView
 =======
-A simple yet flexible library to add carousel view in your Xamarin Android application. This is a C# port of CarouselView for Android which can be found at 
+A simple yet flexible library to add carousel view in your Xamarin Android application. This is a C# port of CarouselView for Android which can be found at [link](https://github.com/sayyam/carouselview)
 
 
 <img src="/assets/carousel_gif.gif" title="sample" width="500" height="460" />
